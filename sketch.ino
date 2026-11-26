@@ -1,5 +1,6 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
+#define BUZZER 7
 
 
 LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
@@ -31,6 +32,8 @@ String password = "1234";
 String enteredPassword = "";
 
 void setup() {
+   pinMode(BUZZER, OUTPUT);
+
   lcd.begin(16, 2);
 
   lcd.setCursor(0, 0);
@@ -84,6 +87,7 @@ void checkPassword() {
   if (enteredPassword == password) {
     lcd.setCursor(0, 0);
     lcd.print("Access Granted");
+    correctSound();
 
     lcd.setCursor(0, 1);
     lcd.print("Welcome!");
@@ -91,6 +95,7 @@ void checkPassword() {
   } else {
     lcd.setCursor(0, 0);
     lcd.print("Wrong Password");
+    wrongSound();
 
     lcd.setCursor(0, 1);
     lcd.print("Try Again!");
@@ -110,4 +115,17 @@ void showInputScreen() {
 
   lcd.setCursor(0, 1);
   lcd.print("                ");
+}
+void correctSound() {
+  tone(BUZZER, 1000);
+  delay(150);
+  tone(BUZZER, 1500);
+  delay(200);
+  noTone(BUZZER);
+}
+
+void wrongSound() {
+  tone(BUZZER, 300);
+  delay(400);
+  noTone(BUZZER);
 }
